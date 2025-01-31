@@ -8,7 +8,7 @@ namespace NZWalks.API.Data
         // ctor shorcut for constructor
         public NZWalksDbContext(DbContextOptions dbContextOptions): base(dbContextOptions)
         {
-            
+        
         }
 
         public DbSet<Difficulty> Difficulties { get; set; }
