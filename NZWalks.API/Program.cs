@@ -20,7 +20,7 @@ builder.Services.AddDbContext<NZWalksDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
 /***** DEMO dependency injection w/ IEnumerable Interface *****/
-builder.Services.AddSingleton<IMyService, EnumerableDemo>();
+builder.Services.AddTransient<IMyService, TestingGenericsDemo>();
 
 var app = builder.Build();
 
@@ -40,7 +40,7 @@ app.UseHttpLogging();
 /***** DEMO IEnumerable Interface as middleware *****/
 app.Use(async (context, next) => {
     var myService = context.RequestServices.GetRequiredService<IMyService>();
-    myService.LogCreation("IEnumerable Middleware");
+    myService.LogCreation("Testing Generics Middleware");
     myService.ExecuteDemo();
     await next.Invoke();
 });
