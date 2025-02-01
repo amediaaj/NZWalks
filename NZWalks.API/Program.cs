@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Common;
 using NZWalks.API.Data;
+using NZWalks.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,9 @@ builder.Services.AddSwaggerGen();
 // of the connection string from appsettings.json
 builder.Services.AddDbContext<NZWalksDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
+
+// Inject implementattion of IRegionRepository
+builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 
 /***** DEMO dependency injection w/ IEnumerable Interface *****/
 builder.Services.AddTransient<IMyService, TestingGenericsDemo>();
