@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
 
@@ -23,8 +24,19 @@ namespace NZWalks.API.Repositories
         async Task<List<Walk>> IWalkRepository.GetAllAsync()
         {
             // Include() allows us to return the data from the referenced types
-            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            return await dbContext.Walks
+                .Include("Difficulty")
+                .Include("Region").
+                ToListAsync();
             //return await dbContext.Walks.Include(x => x.Difficulty).Include("Region").ToListAsync();
+        }
+
+        public async Task<Walk?> GetByIdAsync(Guid id)
+        {
+            return await dbContext.Walks
+                .Include("Difficulty")
+                .Include("Region")
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }
