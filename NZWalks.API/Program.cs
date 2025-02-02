@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Common;
 using NZWalks.API.Data;
+using NZWalks.API.Mappings;
 using NZWalks.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,9 +23,11 @@ builder.Services.AddDbContext<NZWalksDbContext>(options =>
 
 // Inject implementattion of IRegionRepository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+// Inject AutoMapper
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 /***** DEMO dependency injection w/ IEnumerable Interface *****/
-builder.Services.AddTransient<IMyService, TestingGenericsDemo>();
+builder.Services.AddSingleton<IMyService, TestingGenericsDemo>();
 
 var app = builder.Build();
 
