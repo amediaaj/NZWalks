@@ -21,8 +21,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<NZWalksDbContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
-// Inject implementattion of IRegionRepository
+// Inject implementations of IRegionRepository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
+builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+
 // Inject AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
