@@ -13,7 +13,7 @@
         public Guid RegionId { get; set; }
         
 
-        // Navigation properties
+        // Navigation properties (References to other entities)
         public Difficulty Difficulty {  get; set; }
         public Region Region { get; set; }
     }
