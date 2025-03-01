@@ -33,7 +33,7 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 /***** DEMO dependency injection w/ IEnumerable Interface *****/
-builder.Services.AddSingleton<IMyService, CollectionsDemo>();
+builder.Services.AddSingleton<IMyService, InheritanceDemo>();
 
 var app = builder.Build();
 
