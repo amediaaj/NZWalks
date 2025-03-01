@@ -33,7 +33,7 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 /***** DEMO dependency injection w/ IEnumerable Interface *****/
-builder.Services.AddSingleton<IMyService, TestingGenericsDemo>();
+builder.Services.AddSingleton<IMyService, PropertiesDemo>();
 
 var app = builder.Build();
 
@@ -55,12 +55,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 
-/***** DEMO need to add this to use logging *****/
+/***** Demos need to add this to use logging *****/
 app.UseHttpLogging();
-/***** DEMO IEnumerable Interface as middleware *****/
+/***** Demos as middleware *****/
 app.Use(async (context, next) => {
     var myService = context.RequestServices.GetRequiredService<IMyService>();
-    myService.LogCreation("Testing Generics Middleware");
+    myService.LogCreation("Testing Properties Demo Middleware");
     myService.ExecuteDemo();
     await next.Invoke();
 });
