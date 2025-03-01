@@ -18,8 +18,12 @@ builder.Services.AddSwaggerGen();
 
 // Dependency injection of the NZWalksDbContext class and providing
 // of the connection string from appsettings.json
+// builder.Services.AddDbContext<NZWalksDbContext>(options => 
+//     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
+
+// Dependency injection of in-memory database
 builder.Services.AddDbContext<NZWalksDbContext>(options => 
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
+    options.UseInMemoryDatabase(builder.Configuration.GetConnectionString("TestDB")));
 
 // Inject implementations of IRegionRepository
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
@@ -33,6 +37,14 @@ builder.Services.AddSingleton<IMyService, TestingGenericsDemo>();
 
 var app = builder.Build();
 
+// Seed in-memory database
+using(var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<NZWalksDbContext>();
+    var seeder = new DataSeeder(context);
+    seeder.SeedData();
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -41,7 +53,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 /***** DEMO need to add this to use logging *****/
@@ -55,6 +66,4 @@ app.Use(async (context, next) => {
 });
 
 app.MapControllers();
-
-
 app.Run();

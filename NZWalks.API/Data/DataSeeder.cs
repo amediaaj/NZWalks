@@ -1,27 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
 
-namespace NZWalks.API.Data
-{
-    public class NZWalksDbContext : DbContext
-    {
-        // ctor shorcut for constructor
-        public NZWalksDbContext(DbContextOptions<NZWalksDbContext> dbContextOptions): base(dbContextOptions)
-        {
-        
-        }
+public class DataSeeder {
+     private NZWalksDbContext _db;
 
-        public DbSet<Difficulty> Difficulties { get; set; }
-        public DbSet<Region> Regions { get; set; }
-        public DbSet<Walk> Walks { get; set; }
+     public DataSeeder(NZWalksDbContext db) {
+         _db = db;
+     }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
+     public void SeedData() {
+        _db.Difficulties.AddRange(GetDifficultyData());
+        _db.Regions.AddRange(GetRegionData());
+        _db.SaveChanges();
+     }
 
-            // Seed data for Difficulties
-            // Easy, Medium, Hard
-            var difficulties = new List<Difficulty>
+     private List<Difficulty> GetDifficultyData() {
+        return new List<Difficulty>
             {
                 new Difficulty
                 {
@@ -31,22 +25,18 @@ namespace NZWalks.API.Data
                 new Difficulty
                 {
                     Id = Guid.Parse("07354700-0a71-4797-bb2c-0c2e24c91094"),
-                Name = "Medium"
+                    Name = "Medium"
                 },
                 new Difficulty
                 {
                     Id = Guid.Parse("6d5e0be6-2f68-44f8-bfb2-ec02b9e90e88"),
-                Name = "Hard"
+                    Name = "Hard"
                 }
             };
+     }
 
-            // Seed difficulties to the database
-            modelBuilder.Entity<Difficulty>().HasData(difficulties);
-
-            // In Package Manager Console: 'Add-Migration "Seeding Data for Difficulties and Regions"'
-            // In Package Manager Console: "Update-Database"
-            // Seed data for Regions
-            var regions = new List<Region>
+     private List<Region> GetRegionData() {
+         return new List<Region>
             {
                  new Region
                 {
@@ -89,11 +79,7 @@ namespace NZWalks.API.Data
                     Name = "Southland",
                     Code = "STL",
                     RegionImageUrl = null
-                },
-
+                }
             };
-
-            modelBuilder.Entity<Region>().HasData(regions);
-        }
-    }
-}
+     }
+ }

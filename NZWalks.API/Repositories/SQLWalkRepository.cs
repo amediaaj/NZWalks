@@ -16,8 +16,13 @@ namespace NZWalks.API.Repositories
 
         public async Task<Walk> CreateAsync(Walk walk)
         {
+            var difficulty = await dbContext.Difficulties.FirstOrDefaultAsync(x => x.Id == walk.DifficultyId);
+            var region = await dbContext.Regions.FirstOrDefaultAsync(x => x.Id == walk.RegionId);
+            
             await dbContext.Walks.AddAsync(walk);
             await dbContext.SaveChangesAsync();
+            walk.Difficulty = difficulty;
+            walk.Region = region;
             return walk;
         }
 
