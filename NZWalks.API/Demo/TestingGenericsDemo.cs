@@ -2,7 +2,7 @@
 using System.Drawing;
 using Pastel;
 
-namespace NZWalks.API.Common
+namespace NZWalks.API.Demo
 {
     public class TestingGenericsDemo : IMyService
     {

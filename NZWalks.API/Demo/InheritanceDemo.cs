@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace NZWalks.API.Common
+namespace NZWalks.API.Demo
 {
     public class InheritanceDemo : IMyService
     {

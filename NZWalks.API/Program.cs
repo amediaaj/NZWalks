@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NZWalks.API.Common;
+using NZWalks.API.Demo;
 using NZWalks.API.Data;
 using NZWalks.API.Mappings;
 using NZWalks.API.Repositories;
@@ -32,8 +32,11 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 // Inject AutoMapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
-/***** DEMO dependency injection w/ IEnumerable Interface *****/
-builder.Services.AddSingleton<IMyService, InheritanceDemo>();
+/***** DEMO dependency injection *****/
+builder.Services.AddSingleton<IMyService, InterfacesDemo>();
+builder.Services.AddSingleton<IPaymentProcessor, PayPalProcessor>();
+builder.Services.AddSingleton<IPaymentProcessor, PayPalProcessor>();
+
 
 var app = builder.Build();
 

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 
-namespace NZWalks.API.Common
+namespace NZWalks.API.Demo
 {
     public class PropertiesDemo : IMyService
     {

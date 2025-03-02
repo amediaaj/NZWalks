@@ -1,4 +1,4 @@
-﻿namespace NZWalks.API.Common
+﻿namespace NZWalks.API.Demo
 {
     public interface IMyService
     {

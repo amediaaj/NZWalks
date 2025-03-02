@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Drawing;
 
-namespace NZWalks.API.Common
+namespace NZWalks.API.Demo
 {
     public class CollectionsDemo : IMyService
     {
