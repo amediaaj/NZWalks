@@ -33,9 +33,8 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 /***** DEMO dependency injection *****/
-builder.Services.AddSingleton<IMyService, InterfacesDemo>();
-builder.Services.AddSingleton<IPaymentProcessor, PayPalProcessor>();
-builder.Services.AddSingleton<IPaymentProcessor, PayPalProcessor>();
+builder.Services.AddSingleton<IMyService, FileDemo>();
+builder.Services.AddSingleton<NZWalks.API.Demo.ILogger, Logger>();
 
 
 var app = builder.Build();
