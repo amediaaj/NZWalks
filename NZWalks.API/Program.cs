@@ -33,8 +33,8 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 /***** DEMO dependency injection *****/
-builder.Services.AddSingleton<IMyService, DependencyInjectionDemo>();
-builder.Services.AddSingleton<NZWalks.API.Demo.ILogger, Logger>();
+builder.Services.AddSingleton<IMyService, EnumsDemo>();
+//builder.Services.AddSingleton<NZWalks.API.Demo.ILogger, Logger>();
 
 
 var app = builder.Build();
