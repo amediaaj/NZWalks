@@ -21,7 +21,7 @@ namespace NZWalks.API.Demo
             // Notify notifyDelegate = new Notify(ShowMessage);
 
             // 3. Invocation:
-            notifyDelegate("Hello, Delegates!");
+            notifyDelegate("Hello World!");
         }
 
         public void LogCreation(string message)
