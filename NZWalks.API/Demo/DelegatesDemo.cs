@@ -2,15 +2,15 @@
 
 namespace NZWalks.API.Demo
 {
+    // 1. Declaration:
+    public delegate void Notify(string message);
+
     public class DelegatesDemo : IMyService
     {
         private readonly int _serviceId;
 
         // Delegates define a method signature,
         // and any method assigned to a delegate must match this signature.
-
-        // 1. Declaration:
-        public delegate void Notify(string message);
 
         public void ExecuteDemo()
         {
@@ -22,6 +22,10 @@ namespace NZWalks.API.Demo
 
             // 3. Invocation:
             notifyDelegate("Hello World!");
+
+
+            DelegateLogger logger = new DelegateLogger(LogToConsole);
+            logger.Log("Logging to Console");
         }
 
         public void LogCreation(string message)
@@ -32,6 +36,25 @@ namespace NZWalks.API.Demo
         static void ShowMessage(string message)
         {
             Debug.WriteLine(message);
+        }
+
+        static void LogToConsole(string message)
+        {
+            Debug.WriteLine("Console: " + message);
+        }
+    }
+
+    public class DelegateLogger
+    {
+        public readonly Notify _log;
+        public DelegateLogger(Notify log)
+        {
+            _log = log;
+        }
+
+        public void Log(string message)
+        {
+            _log(message);
         }
     }
 }
