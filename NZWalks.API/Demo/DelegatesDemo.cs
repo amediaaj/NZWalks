@@ -25,7 +25,11 @@ namespace NZWalks.API.Demo
 
 
             DelegateLogger logger = new DelegateLogger(LogToConsole);
-            logger.Log("Logging to Console");
+            // Increment multicast of delegate Notify
+            logger.AddLogger(LogToFile);
+
+            // Call both instances of delegate Notify
+            logger.Log("Logging...");
         }
 
         public void LogCreation(string message)
@@ -42,14 +46,25 @@ namespace NZWalks.API.Demo
         {
             Debug.WriteLine("Console: " + message);
         }
+
+        static void LogToFile(string message)
+        {
+            Debug.WriteLine("File: " + message);
+        }
     }
 
     public class DelegateLogger
     {
-        public readonly Notify _log;
+        public Notify _log;
         public DelegateLogger(Notify log)
         {
             _log = log;
+        }
+
+        public void AddLogger(Notify log)
+        {
+            // Setup multicast of Notify delegate
+            _log += log;
         }
 
         public void Log(string message)
