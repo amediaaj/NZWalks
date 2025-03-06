@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Identity.Client;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
@@ -13,17 +11,15 @@ namespace NZWalks.API.Controllers
     [ApiController]
     public class WalksController : ControllerBase
     {
-        private readonly IWalkRepository walkRepository;
-        private readonly IMapper mapper;
+        private readonly IWalkRepository _walkRepository;
+        private readonly IMapper _mapper;
 
         // ctor constructor shortcut
         public WalksController(IWalkRepository walkRepository, IMapper mapper)
         {
-            this.walkRepository = walkRepository;
-            this.mapper = mapper;
+            this._walkRepository = walkRepository;
+            this._mapper = mapper;
         }
-
-  
 
         // CREATE Walk
         // POST: /api/walks
@@ -31,12 +27,12 @@ namespace NZWalks.API.Controllers
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
             // Map DTO to Domain Model
-            var walkDomain = mapper.Map<Walk>(addWalkRequestDto);
+            var walkDomain = _mapper.Map<Walk>(addWalkRequestDto);
 
-            await walkRepository.CreateAsync(walkDomain);
+            await _walkRepository.CreateAsync(walkDomain);
 
             // Map Domain model to DTO
-            var walkDto = mapper.Map<WalkDto>(walkDomain);
+            var walkDto = _mapper.Map<WalkDto>(walkDomain);
 
             // TODO: Update this return after Get method implemented
             return Ok(walkDto);
@@ -47,9 +43,9 @@ namespace NZWalks.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var walksDomainModels = await walkRepository.GetAllAsync();
+            var walksDomainModels = await _walkRepository.GetAllAsync();
 
-            return Ok(mapper.Map<List<WalkDto>>(walksDomainModels));
+            return Ok(_mapper.Map<List<WalkDto>>(walksDomainModels));
         }
 
         // Get Walks by Id
@@ -58,7 +54,7 @@ namespace NZWalks.API.Controllers
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var walkDomain = await walkRepository.GetByIdAsync(id);
+            var walkDomain = await _walkRepository.GetByIdAsync(id);
 
             if (walkDomain == null)
             {
@@ -66,8 +62,7 @@ namespace NZWalks.API.Controllers
             }
 
             // Mapp Domain Model to DTO
-            return Ok(mapper.Map<WalkDto>(walkDomain));
+            return Ok(_mapper.Map<WalkDto>(walkDomain));
         }
-
     }
 }

@@ -1,21 +1,20 @@
-using NZWalks.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
 using NZWalks.API.Models.Domain;
 
-public class DataSeeder {
-     private NZWalksDbContext _db;
+namespace NZWalks.API.Data
+{
+    public class InMemoryDbContext : AppDbContext
+    {
+        public InMemoryDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        {
+            this.Difficulties.AddRange(GetDifficultyData());
+            this.Regions.AddRange(GetRegionData());
+            this.SaveChanges();
+        }
 
-     public DataSeeder(NZWalksDbContext db) {
-         _db = db;
-     }
-
-     public void SeedData() {
-        _db.Difficulties.AddRange(GetDifficultyData());
-        _db.Regions.AddRange(GetRegionData());
-        _db.SaveChanges();
-     }
-
-     private List<Difficulty> GetDifficultyData() {
-        return new List<Difficulty>
+        private List<Difficulty> GetDifficultyData()
+        {
+            return new List<Difficulty>
             {
                 new Difficulty
                 {
@@ -33,10 +32,11 @@ public class DataSeeder {
                     Name = "Hard"
                 }
             };
-     }
+        }
 
-     private List<Region> GetRegionData() {
-         return new List<Region>
+        private List<Region> GetRegionData()
+        {
+            return new List<Region>
             {
                  new Region
                 {
@@ -81,5 +81,6 @@ public class DataSeeder {
                     RegionImageUrl = null
                 }
             };
-     }
- }
+        }
+    }
+}

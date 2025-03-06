@@ -12,15 +12,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<NZWalksDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext, NZWalksDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
 /******************** In memory database **********************************************/
-//builder.Services.AddDbContext<NZWalksDbContext>(options => 
+//builder.Services.AddDbContext<AppDbContext, InMemoryDbContext>(options =>
 //    options.UseInMemoryDatabase(builder.Configuration.GetConnectionString("TestDB")));
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+builder.Services.AddScoped<IDifficultyRespository, SQLDifficultyRespository>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 var app = builder.Build();
@@ -34,6 +35,7 @@ var app = builder.Build();
 //}
 
 // Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
