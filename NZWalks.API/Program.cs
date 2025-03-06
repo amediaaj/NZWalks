@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using NZWalks.API.Demo;
 using NZWalks.API.Data;
 using NZWalks.API.Mappings;
 using NZWalks.API.Repositories;
