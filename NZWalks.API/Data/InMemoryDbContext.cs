@@ -5,11 +5,21 @@ namespace NZWalks.API.Data
 {
     public class InMemoryDbContext : AppDbContext
     {
+        private static bool _initialized = false;
+        private static readonly object padlock = new object();
+
         public InMemoryDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
         {
-            this.Difficulties.AddRange(GetDifficultyData());
-            this.Regions.AddRange(GetRegionData());
-            this.SaveChanges();
+            lock (padlock)
+            {
+                if (!_initialized)
+                {
+                    _initialized = true;
+                    this.Difficulties.AddRange(GetDifficultyData());
+                    this.Regions.AddRange(GetRegionData());
+                    this.SaveChanges();
+                }
+            }
         }
 
         private List<Difficulty> GetDifficultyData()

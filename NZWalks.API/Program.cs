@@ -12,12 +12,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<AppDbContext, NZWalksDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
+//builder.Services.AddDbContext<AppDbContext, NZWalksDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
 /******************** In memory database **********************************************/
-//builder.Services.AddDbContext<AppDbContext, InMemoryDbContext>(options =>
-//    options.UseInMemoryDatabase(builder.Configuration.GetConnectionString("TestDB")));
+builder.Services.AddDbContext<AppDbContext, InMemoryDbContext>(options =>
+    options.UseInMemoryDatabase(builder.Configuration.GetConnectionString("TestDB")));
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
