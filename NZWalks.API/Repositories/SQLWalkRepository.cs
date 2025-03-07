@@ -26,14 +26,26 @@ namespace NZWalks.API.Repositories
             return walk;
         }
 
-        async Task<List<Walk>> IWalkRepository.GetAllAsync()
+        async Task<List<Walk>> IWalkRepository.GetAllAsync(string? filterOn = null, string? filterQuery = null)
         {
-            // Include() allows us to return the data from the referenced types
-            return await dbContext.Walks
-                .Include("Difficulty")
-                .Include("Region").
-                ToListAsync();
+            var walks = dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+
+            // Filtering
+            if(!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
+            {
+                if(filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = walks.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+
+            //return await dbContext.Walks
+            //    .Include("Difficulty")
+            //    .Include("Region").
+            //    ToListAsync();
             //return await dbContext.Walks.Include(x => x.Difficulty).Include("Region").ToListAsync();
+
+            return await walks.ToListAsync();
         }
 
         public async Task<Walk?> GetByIdAsync(Guid id)
