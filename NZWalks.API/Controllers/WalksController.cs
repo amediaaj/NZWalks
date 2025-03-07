@@ -26,16 +26,23 @@ namespace NZWalks.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
-            // Map DTO to Domain Model
-            var walkDomain = _mapper.Map<Walk>(addWalkRequestDto);
+            if(ModelState.IsValid)
+            {
+                // Map DTO to Domain Model
+                var walkDomain = _mapper.Map<Walk>(addWalkRequestDto);
 
-            await _walkRepository.CreateAsync(walkDomain);
+                await _walkRepository.CreateAsync(walkDomain);
 
-            // Map Domain model to DTO
-            var walkDto = _mapper.Map<WalkDto>(walkDomain);
+                // Map Domain model to DTO
+                var walkDto = _mapper.Map<WalkDto>(walkDomain);
 
-            // TODO: Update this return after Get method implemented
-            return Ok(walkDto);
+                // TODO: Update this return after Get method implemented
+                return Ok(walkDto);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
         }
 
         // GET Walks
@@ -49,7 +56,7 @@ namespace NZWalks.API.Controllers
         }
 
         // Get Walks by Id
-        // GET: /api/Walks/{id}
+        // GET: /api/walks/{id}
         [HttpGet]
         [Route("{id:Guid}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
@@ -62,6 +69,47 @@ namespace NZWalks.API.Controllers
             }
 
             // Mapp Domain Model to DTO
+            return Ok(_mapper.Map<WalkDto>(walkDomain));
+        }
+
+        // Update Walk by Id
+        // PUT: /api/walks/{id}
+        [HttpPut]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Update([FromRoute] Guid id, UpdateWalkRequestDTO updateWalkRequestDTO)
+        {
+            if(ModelState.IsValid)
+            {
+                // DTO to Domain Model
+                var walkDomain = _mapper.Map<Walk>(updateWalkRequestDTO);
+                walkDomain = await _walkRepository.UpdateAync(id, walkDomain);
+
+                if (walkDomain == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(_mapper.Map<WalkDto>(walkDomain));
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+        }
+
+        // Delete a Walk By Id
+        // DELETE: /api/walks
+        [HttpDelete]
+        [Route("{id:Guid}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            var walkDomain = await _walkRepository.DeleteAsync(id);
+
+            if (walkDomain == null)
+            {
+                return NotFound();
+            }
+
             return Ok(_mapper.Map<WalkDto>(walkDomain));
         }
     }

@@ -17,6 +17,7 @@ namespace NZWalks.API.Data
                     _initialized = true;
                     this.Difficulties.AddRange(GetDifficultyData());
                     this.Regions.AddRange(GetRegionData());
+                    this.Walks.AddRange(GetWalkData());
                     this.SaveChanges();
                 }
             }
@@ -89,6 +90,23 @@ namespace NZWalks.API.Data
                     Name = "Southland",
                     Code = "STL",
                     RegionImageUrl = null
+                }
+            };
+        }
+
+        private List<Walk> GetWalkData()
+        {
+            return new List<Walk>
+            {
+                new Walk
+                {
+                    Id = Guid.Parse("3fa85f64-5717-4562-b3fc-2c963f66afa6"),
+                    Name = "The Jolly Walk",
+                    Description = "A really fun walk" ,
+                    LengthInKm = 10,
+                    WalkImageUrl = @"http://localhost:5072/api/photos",
+                    RegionId = Guid.Parse("f7248fc3-2585-4efb-8d1d-1c555f4087f6"),
+                    DifficultyId = Guid.Parse("73a82da0-59e8-49b6-9399-9e3f29470103")
                 }
             };
         }
