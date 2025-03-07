@@ -18,6 +18,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext, NZWalksDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksConnectionString")));
 
+builder.Services.AddDbContext<NZWalksAuthDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksAuthConnectionString")));
+
 /******************** In memory database **********************************************/
 //builder.Services.AddDbContext<AppDbContext, InMemoryDbContext>(options =>
 //    options.UseInMemoryDatabase(builder.Configuration.GetConnectionString("TestDB")));

@@ -8,7 +8,7 @@ namespace NZWalks.API.Data
         private static bool _initialized = false;
         private static readonly object padlock = new object();
 
-        public InMemoryDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+        public InMemoryDbContext(DbContextOptions<InMemoryDbContext> dbContextOptions) : base(dbContextOptions)
         {
             lock (padlock)
             {
