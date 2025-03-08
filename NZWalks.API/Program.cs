@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
+
+var logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .MinimumLevel.Debug()
+    //.MinimumLevel.Information()
+    //.MinimumLevel.Warning()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

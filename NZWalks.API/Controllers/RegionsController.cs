@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Text.Json;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.CustomActionFilters;
@@ -16,23 +17,49 @@ namespace NZWalks.API.Controllers
     {
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<RegionsController> _logger;
 
-        public RegionsController(IRegionRepository regionRepository, IMapper mapper)
+        public RegionsController(
+            IRegionRepository regionRepository, 
+            IMapper mapper, 
+            ILogger<RegionsController> logger)
         {
             _regionRepository = regionRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         // GET ALL REGIONS
         // GET: https://localhost:portnumber/api/regions
         [HttpGet]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
-            // Get Data From Database - Domain models
-            var regionsDomain = await _regionRepository.GetAllAsync();
+            try
+            {
+                // throw new Exception("This is a custom exception");
 
-            // Return DTOs (Map Domain Models to DTOs)
-            return Ok(_mapper.Map<List<RegionDto>>(regionsDomain));
+                _logger.LogInformation("GetAllRegions Action Method was invoked");
+
+                // Get Data From Database - Domain models
+                var regionsDomain = await _regionRepository.GetAllAsync();
+
+                // Return DTOs (Map Domain Models to DTOs)
+
+                _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");
+
+                return Ok(_mapper.Map<List<RegionDto>>(regionsDomain));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+
+                // Re-throw the eception, handy if you want to do some rudimentary exception handling,
+                // and then rethrow the exception to the calling method.
+                throw;
+            }
+
+         
         }
 
         // GET SINGLE REGION (Get Region By ID)
