@@ -59,6 +59,9 @@ namespace NZWalks.API.Controllers
                 pageNumber,
                 pageSize);
 
+            // Create an exception
+            throw new Exception("This is a new exceiption");
+
             return Ok(_mapper.Map<List<WalkDto>>(walksDomainModels));
         }
 

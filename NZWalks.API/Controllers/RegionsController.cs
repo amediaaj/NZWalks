@@ -35,31 +35,16 @@ namespace NZWalks.API.Controllers
         [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                // throw new Exception("This is a custom exception");
+            _logger.LogInformation("GetAllRegions Action Method was invoked");
 
-                _logger.LogInformation("GetAllRegions Action Method was invoked");
+            // Get Data From Database - Domain models
+            var regionsDomain = await _regionRepository.GetAllAsync();
 
-                // Get Data From Database - Domain models
-                var regionsDomain = await _regionRepository.GetAllAsync();
+            // Return DTOs (Map Domain Models to DTOs)
 
-                // Return DTOs (Map Domain Models to DTOs)
+            _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");
 
-                _logger.LogInformation($"Finished GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");
-
-                return Ok(_mapper.Map<List<RegionDto>>(regionsDomain));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-
-                // Re-throw the eception, handy if you want to do some rudimentary exception handling,
-                // and then rethrow the exception to the calling method.
-                throw;
-            }
-
-         
+            return Ok(_mapper.Map<List<RegionDto>>(regionsDomain));    
         }
 
         // GET SINGLE REGION (Get Region By ID)

@@ -9,16 +9,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.FileProviders;
 using Serilog;
+using NZWalks.API.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddTransient<ExceptionHandlerMiddleware>();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 
 var logger = new LoggerConfiguration()
     .WriteTo.Console()
+    .WriteTo.File("Logs/NzWalks_Log.Txt", rollingInterval: RollingInterval.Day)
     .MinimumLevel.Debug()
     //.MinimumLevel.Information()
     //.MinimumLevel.Warning()
@@ -109,14 +112,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-/******************** In memory database **********************************************/
-//using(var scope = app.Services.CreateScope())
-//{
-//    var context = scope.ServiceProvider.GetRequiredService<NZWalksDbContext>();
-//    var seeder = new DataSeeder(context);
-//    seeder.SeedData();
-//}
-
 // Configure the HTTP request pipeline.
 
 if (app.Environment.IsDevelopment())
@@ -125,8 +120,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
